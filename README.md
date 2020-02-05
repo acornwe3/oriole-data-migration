@@ -19,7 +19,22 @@ Xerces data are stored in MySQL in XML format. To extract the data, run the foll
 Export data from MySQL:2yeR6cSdy3
 
 ```
-mysql --user=xerxes --password -h mysql.mse.jhu.edu -e "SELECT data from xerxes.xerxes_databases;" > data.txt
+mysql --user=xerxes --password= -h mysql.mse.jhu.edu -e "SELECT data from xerxes.xerxes_databases;" > data.txt
+```
+
+Export tags from MSQL 
+```
+mysql --user=xerxes --password= -h mysql.mse.jhu.edu -e 
+“SELECT subcat_2_db.database_id as database_id
+, cat.name AS catname
+, subcat.name AS subname
+FROM xerxes_categories cat
+INNER JOIN xerxes_subcategories subcat 
+    ON cat.id = subcat.category_id
+INNER JOIN xerxes_subcategory_databases subcat_2_db
+    ON subcat.metalib_id = subcat_2_db.subcategory_id
+WHERE subcat.name NOT IN ('ALL', 'More')
+ORDER BY 1, 2, 3” > data/xerxes_tags.csv
 ```
 
 Make it an XML and clean up
